@@ -23,3 +23,9 @@ class Environment(ABC):
     
     def copy(self):
         pass
+
+    def __hash__(self):
+        pass 
+
+    def __eq__(self):
+        pass 

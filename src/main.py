@@ -3,6 +3,7 @@ import time
 from os import listdir
 from os.path import isfile, join
 from domains.witness import WitnessState
+from domains.witnesstriangle import TriangleState
 from search.bfs_levin import BFSLevin
 from models.model_wrapper import KerasManager, KerasModel
 from concurrent.futures.process import ProcessPoolExecutor
@@ -13,6 +14,7 @@ from domains.sliding_tile_puzzle import SlidingTilePuzzle
 from domains.sokoban import Sokoban
 from search.puct import PUCT
 from bootstrap import Bootstrap
+from natsort import natsorted 
 
 def search_time_limit(states, planner, nn_model, ncpus, time_limit_seconds):
     """
@@ -125,7 +127,7 @@ def main():
                         help='Name of the search algorithm (Levin, LevinStar, AStar, GBFS, PUCT)')
     
     parser.add_argument('-d', action='store', dest='problem_domain',
-                        help='Problem domain (Witness or SlidingTile)')
+                        help='Problem domain (Witness or SlidingTile or Triangle)')
     
     parser.add_argument('-b', action='store', dest='search_budget', default=1000,
                         help='The initial budget (nodes expanded) allowed to the bootstrap procedure')
@@ -242,7 +244,33 @@ def main():
             if len(problem) > 0:
                 puzzle = Sokoban(problem)
                 states['puzzle_' + str(problem_id)] = puzzle
+
+
+    elif parameters.problem_domain == 'Triangle':
+        puzzle_files = [f for f in natsorted(listdir(parameters.problems_folder)) if isfile(join(parameters.problems_folder, f))]
+        j = 0
+               
+        for filename in puzzle_files:
+            if '.' in filename:
+                continue
+            
+            with open(join(parameters.problems_folder, filename), 'r') as file:
+                puzzle = file.readlines()
+                
+                i = 0
+                while i < len(puzzle):
+                    k = i
+                    while k < len(puzzle) and puzzle[k] != '\n':
+                        k += 1
+                    print(filename)
+                    s = TriangleState()
+                    s.read_state_from_string(puzzle[i:k])
+                    states['puzzle_' + str(j)] = s
+                    i = k + 1
+                    j += 1
     
+    #states['puzzle_4'].plot()
+    #return 
     if int(parameters.number_test_instances) != 0:
         states_capped = {}
         counter = 0

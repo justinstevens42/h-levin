@@ -173,6 +173,11 @@ class BFSLevin():
 
                 if child.is_solution(): 
                     end_time = time.time()
+                    #print(type(child))
+                    #return 
+                    #print("Got here")
+                    #child.state.plot()
+                    print('Solved puzzle: ', puzzle_name, ' expanding ', expanded, ' with budget: ', budget)
                     return node.get_g() + 1, expanded, generated, end_time - start_time, puzzle_name
                 
                 child_node = TreeNode(node, child, node.get_p() + probability_distribution[a], node.get_g() + 1, -1, a)
