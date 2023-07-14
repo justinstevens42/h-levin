@@ -313,7 +313,7 @@ class TriangleState(Environment):
         to [5, 5] (see below).
         """
 
-        print("Hello world")
+        #print("Hello world")
         fig = plt.figure(figsize=[5,5])
         fig.patch.set_facecolor((1,1,1))
         

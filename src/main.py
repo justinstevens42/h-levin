@@ -86,6 +86,11 @@ def search(states, planner, nn_model, ncpus, time_limit_seconds, search_budget=-
             generated = result[2]
             running_time = result[3]
             puzzle_name = result[4]
+
+            with open(join("problems", "witnesstriangle", "TestingSmall", "Results", puzzle_name), "w") as fp:
+                fp.write(puzzle_name+"\n")
+                fp.write(str(expanded)+"\n")
+                fp.write(str(running_time)+"\n")
             
             if solution_depth > 0:
                 solutions[puzzle_name] = (solution_depth, expanded, generated, running_time)
