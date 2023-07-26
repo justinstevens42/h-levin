@@ -551,6 +551,19 @@ class TriangleState(Environment):
                         return False 
         return True 
        
+    def violates_constraint(self):
+        """
+        Verifies whether the state's path violates a local constraint
+        """
+        for j in range(0, self._cells.shape[0]):
+            for k in range(0, self._cells.shape[1]):
+                if self._cells[j][k] > 0 :
+                    # If the number of edges around the square equals the number of triangles in that square 
+                    if (self._v_seg[j][k]+self._v_seg[j][k+1]+self._h_seg[j][k]+self._h_seg[j+1][k] > self._cells[j][k]):
+                        return True 
+                    else:
+                        continue 
+        return False
     
     def save_state(self, filename):
         """
