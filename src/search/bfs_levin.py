@@ -171,6 +171,11 @@ class BFSLevin():
                 child = copy.deepcopy(node.get_game_state())
                 child.apply_action(a)
 
+                if child.violates_constraint():
+                    #print("Violates constraint")
+                    # Local constraint checking
+                    continue 
+
                 if child.is_solution(): 
                     end_time = time.time()
                     #print(type(child))
@@ -304,6 +309,11 @@ class BFSLevin():
                 child = copy.deepcopy(node.get_game_state())
 #                 child = node.get_game_state().copy()
                 child.apply_action(a)
+
+                if child.violates_constraint():
+                    #print("Violates constraint")
+                    # Local constraint checking
+                    continue 
 
                 child_node = TreeNode(node, child, node.get_p() + probability_distribution_log[a], node.get_g() + 1, -1, a)
 
