@@ -1,0 +1,55 @@
+list_member(X,[X|_]).
+list_member(X,[_|TAIL]) :- list_member(X,TAIL).
+member_count([], _, 0).
+member_count([X | TAIL] , A, S) :- list_member(X, A) -> member_count(TAIL, A, Y), S is Y+1; member_count(TAIL, A, Y), S is Y.
+list_length(X, S) :- member_count(X, X, S).
+greaterThanEqual(X,Y) :- X>=Y.
+adjacentCell(Path, Cell) :- pathHead(Path, Vertex), constraintCell(Cell, _, ListOfEdges), list_member(Edge, ListOfEdges), edge(Edge, Vertex, _).
+notAdjacentCell(Path, Cell) :- \+ adjacentCell(Path, Cell).
+one(1).
+two(2).
+three(3).
+not(notCompletable(_, [])).
+notCompletable(P, [C|T]) :- breaksConstraint(P, C); notCompletable(P, T).
+greaterThan(X,Y) :- X>Y.
+edge(e1, v1, v2).
+edge(e3, v1, v4).
+edge(e3, v4, v1).
+edge(e6, v4, v5).
+edge(e8, v4, v7).
+edge(e8, v7, v4).
+edge(e11, v7, v8).
+edge(e13, v7, v10).
+edge(e13, v10, v7).
+edge(e16, v10, v11).
+edge(e1, v2, v1).
+edge(e2, v2, v3).
+edge(e4, v2, v5).
+edge(e6, v5, v4).
+edge(e4, v5, v2).
+edge(e7, v5, v6).
+edge(e9, v5, v8).
+edge(e11, v8, v7).
+edge(e9, v8, v5).
+edge(e12, v8, v9).
+edge(e14, v8, v11).
+edge(e16, v11, v10).
+edge(e14, v11, v8).
+edge(e17, v11, v12).
+edge(e2, v3, v2).
+edge(e5, v3, v6).
+edge(e7, v6, v5).
+edge(e5, v6, v3).
+edge(e10, v6, v9).
+edge(e12, v9, v8).
+edge(e10, v9, v6).
+edge(e15, v9, v12).
+edge(e17, v12, v11).
+edge(e15, v12, v9).
+corner(c1).
+corner(c2).
+corner(c6).
+corner(c5).
+constraintCell(c4, 3, [e7, e9, e10, e12]).
+constraintCell(c3, 3, [e6, e8, e9, e11]).
+constraintCell(c2, 2, [e2, e4, e5, e7]).
